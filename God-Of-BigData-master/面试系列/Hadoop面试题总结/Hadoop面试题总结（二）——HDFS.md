@@ -28,12 +28,12 @@
 ### 7、HDFS的存储机制（☆☆☆☆☆）  
 &emsp; HDFS存储机制，包括HDFS的**写入数据过程**和**读取数据过程**两部分  
 &emsp; **HDFS写数据过程**  
+
 <p align="center">
 <img src="https://github.com/wangzhiwubigdata/God-Of-BigData/blob/master/%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/pics/Hadoop%E9%9D%A2%E8%AF%95%E9%A2%98Pics/HDFS%E5%86%99%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.png"/>  
 <p align="center">
 </p>
 </p>  
-
 &emsp; 1）客户端通过Distributed FileSystem模块向NameNode请求上传文件，NameNode检查目标文件是否已存在，父目录是否存在。  
 &emsp; 2）NameNode返回是否可以上传。  
 &emsp; 3）客户端请求第一个 block上传到哪几个datanode服务器上。  
@@ -50,7 +50,6 @@ dn1每传一个packet会放入一个应答队列等待应答。
 <p align="center">
 </p>
 </p>  
-
 &emsp; 1）客户端通过Distributed FileSystem向NameNode请求下载文件，NameNode通过查询元数据，找到文件块所在的DataNode地址。  
 &emsp; 2）挑选一台DataNode（就近原则，然后随机）服务器，请求读取数据。  
 &emsp; 3）DataNode开始传输数据给客户端（从磁盘里面读取数据输入流，以packet为单位来做校验）。  
