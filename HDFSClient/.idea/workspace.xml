@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7671c1cc-cc0c-43ca-b2a1-4559d15fa088" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\code\apache-maven-3.6.1\repository" />
+        <option name="mavenHome" value="D:/code/apache-maven-3.6.1" />
+        <option name="userSettingsFile" value="D:\code\apache-maven-3.6.1\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2BBi7sA0q1CYjHGfas3x0KZYO3g" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.gutterIcons" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\test\HDFSClient\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.HdfsClient.testListStatus">
+    <configuration name="HdfsClient.testCopyFromLocalFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HDFSClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.atguigu.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.atguigu.hdfs" />
+      <option name="MAIN_CLASS_NAME" value="com.atguigu.hdfs.HdfsClient" />
+      <option name="METHOD_NAME" value="testCopyFromLocalFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HdfsClient.testCopyToLocalFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HDFSClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.atguigu.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.atguigu.hdfs" />
+      <option name="MAIN_CLASS_NAME" value="com.atguigu.hdfs.HdfsClient" />
+      <option name="METHOD_NAME" value="testCopyToLocalFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HdfsClient.testListFiles" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HDFSClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.atguigu.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.atguigu.hdfs" />
+      <option name="MAIN_CLASS_NAME" value="com.atguigu.hdfs.HdfsClient" />
+      <option name="METHOD_NAME" value="testListFiles" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HdfsClient.testListStatus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HDFSClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.atguigu.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.atguigu.hdfs" />
+      <option name="MAIN_CLASS_NAME" value="com.atguigu.hdfs.HdfsClient" />
+      <option name="METHOD_NAME" value="testListStatus" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HdfsClient.testRename" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HDFSClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.atguigu.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.atguigu.hdfs" />
+      <option name="MAIN_CLASS_NAME" value="com.atguigu.hdfs.HdfsClient" />
+      <option name="METHOD_NAME" value="testRename" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.HdfsClient.testListStatus" />
+        <item itemvalue="JUnit.HdfsClient.testListFiles" />
+        <item itemvalue="JUnit.HdfsClient.testRename" />
+        <item itemvalue="JUnit.HdfsClient.testCopyToLocalFile" />
+        <item itemvalue="JUnit.HdfsClient.testCopyFromLocalFile" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7671c1cc-cc0c-43ca-b2a1-4559d15fa088" name="Default Changelist" comment="" />
+      <created>1656385714705</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1656385714705</updated>
+      <workItem from="1656385717459" duration="208000" />
+      <workItem from="1656385950697" duration="900000" />
+      <workItem from="1656387179068" duration="5283000" />
+      <workItem from="1656487632427" duration="4000" />
+      <workItem from="1656557107686" duration="720000" />
+      <workItem from="1656820428962" duration="1121000" />
+      <workItem from="1656985342958" duration="11000" />
+      <workItem from="1658375035213" duration="1058000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="615" y="157" key="#com.intellij.ide.util.MemberChooser" timestamp="1656386513500">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="615" y="157" key="#com.intellij.ide.util.MemberChooser/0.0.1707.1027@0.0.1707.1027" timestamp="1656386513500" />
+    <state width="1653" height="104" key="GridCell.Tab.0.bottom" timestamp="1656400885022">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="104" key="GridCell.Tab.0.bottom/0.0.1707.1027@0.0.1707.1027" timestamp="1656400885022" />
+    <state width="1653" height="104" key="GridCell.Tab.0.center" timestamp="1656400885022">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="104" key="GridCell.Tab.0.center/0.0.1707.1027@0.0.1707.1027" timestamp="1656400885022" />
+    <state width="1653" height="104" key="GridCell.Tab.0.left" timestamp="1656400885021">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="104" key="GridCell.Tab.0.left/0.0.1707.1027@0.0.1707.1027" timestamp="1656400885021" />
+    <state width="1653" height="104" key="GridCell.Tab.0.right" timestamp="1656400885022">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="104" key="GridCell.Tab.0.right/0.0.1707.1027@0.0.1707.1027" timestamp="1656400885022" />
+    <state x="466" y="207" width="775" height="612" key="find.popup" timestamp="1656557210882">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="466" y="207" width="775" height="612" key="find.popup/0.0.1707.1027@0.0.1707.1027" timestamp="1656557210882" />
+    <state x="432" y="0" width="840" height="1025" key="search.everywhere.popup" timestamp="1656557219965">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="432" y="0" width="840" height="1025" key="search.everywhere.popup/0.0.1707.1027@0.0.1707.1027" timestamp="1656557219965" />
+  </component>
+</project>

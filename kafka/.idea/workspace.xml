@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a9e9ed1e-a172-45b4-a196-3e59e4aaf4bc" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\code\apache-maven-3.6.1\repository" />
+        <option name="mavenHome" value="D:/code/apache-maven-3.6.1" />
+        <option name="userSettingsFile" value="D:\code\apache-maven-3.6.1\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="2CmyNKpGzPY50SS6nu2qAw8QUE8" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RunManager" selected="Application.SimpleConsumer">
+    <configuration name="ProducerWithPartitioner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.bigdata.kafka.Partition.ProducerWithPartitioner" />
+      <module name="kafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bigdata.kafka.Partition.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SimpleConsumer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.bigdata.kafka.consumer.SimpleConsumer" />
+      <module name="kafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bigdata.kafka.consumer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SimpleProducer1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.bigdata.kafka.producer.SimpleProducer1" />
+      <module name="kafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bigdata.kafka.producer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SimpleConsumer" />
+        <item itemvalue="Application.ProducerWithPartitioner" />
+        <item itemvalue="Application.SimpleProducer1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a9e9ed1e-a172-45b4-a196-3e59e4aaf4bc" name="Default Changelist" comment="" />
+      <created>1659422013679</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659422013679</updated>
+      <workItem from="1659422016313" duration="4752000" />
+      <workItem from="1659603253320" duration="48000" />
+      <workItem from="1659603366010" duration="210000" />
+      <workItem from="1659603601450" duration="15000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="346" y="93" key="#Custom_Plugin_Repositories" timestamp="1659603407538">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="346" y="93" key="#Custom_Plugin_Repositories/0.0.1707.1027@0.0.1707.1027" timestamp="1659603407538" />
+    <state x="615" y="157" key="#com.intellij.ide.util.MemberChooser" timestamp="1659423267728">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="615" y="157" key="#com.intellij.ide.util.MemberChooser/0.0.1707.1027@0.0.1707.1027" timestamp="1659423267728" />
+    <state width="1653" height="302" key="GridCell.Tab.0.bottom" timestamp="1659435773459">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="302" key="GridCell.Tab.0.bottom/0.0.1707.1027@0.0.1707.1027" timestamp="1659435773459" />
+    <state width="1653" height="302" key="GridCell.Tab.0.center" timestamp="1659435773459">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="302" key="GridCell.Tab.0.center/0.0.1707.1027@0.0.1707.1027" timestamp="1659435773459" />
+    <state width="1653" height="302" key="GridCell.Tab.0.left" timestamp="1659435773459">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="302" key="GridCell.Tab.0.left/0.0.1707.1027@0.0.1707.1027" timestamp="1659435773459" />
+    <state width="1653" height="302" key="GridCell.Tab.0.right" timestamp="1659435773459">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state width="1653" height="302" key="GridCell.Tab.0.right/0.0.1707.1027@0.0.1707.1027" timestamp="1659435773459" />
+    <state x="235" y="72" key="SettingsEditor" timestamp="1659603615883">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="235" y="72" key="SettingsEditor/0.0.1707.1027@0.0.1707.1027" timestamp="1659603615883" />
+    <state x="56" y="198" width="1594" height="634" key="new project wizard" timestamp="1659603299167">
+      <screen x="0" y="0" width="1707" height="1027" />
+    </state>
+    <state x="56" y="198" width="1594" height="634" key="new project wizard/0.0.1707.1027@0.0.1707.1027" timestamp="1659603299167" />
+  </component>
+</project>
