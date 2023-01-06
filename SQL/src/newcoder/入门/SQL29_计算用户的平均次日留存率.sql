@@ -69,9 +69,17 @@ select * from user_profile;
 
 /*
  解法一：
+    question_practice_detail：用户刷题信息表，唯一主键：id
+    uniq_id_date：构建用户第二天来了的临时表，question_practice_detail去重device_id, date，主键：device_id, date
 
- 解法二：
+    select
+        distinct t1.device_id,t1.date date1,t2.date date2
+    from
+    question_practice_detail t1 left join uniq_id_date t2
+    on t1.device_id = t2.device_id and date_add(t1.date, interval 1 day) = t2.date
 
+    用户第二天还来的概率：count(date2) / count(date1)
+                        计算第二天还来的概率，不需要同一天的多条数据，所以两个日期都做了去重处理
  */
 select count(date2) / count(date1) as avg_ret
 from (
@@ -86,4 +94,19 @@ from (
          ) as uniq_id_date
                            on qpd.device_id=uniq_id_date.device_id
                                and date_add(qpd.date, interval 1 day)=uniq_id_date.date
-     ) as id_last_next_date
+     ) as id_last_next_date;
+/*
+ 解法二：
+    检查date2和date1的日期差是不是为1，是则为1（次日留存了），否则为0（次日未留存），取avg即可得平均概率
+ */
+select avg(if(datediff(date2, date1)=1, 1, 0)) as avg_ret
+from (
+         select
+             distinct device_id,
+                      date as date1,
+                      lead(date) over (partition by device_id order by date) as date2
+         from (
+                  select distinct device_id, date
+                  from question_practice_detail
+              ) as uniq_id_date
+     ) as id_last_next_date;

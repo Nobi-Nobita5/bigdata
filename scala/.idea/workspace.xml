@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0f46ee5-a172-4e63-8297-aa011f5de85a" name="Default Changelist" comment="" />
+    <list default="true" id="a0f46ee5-a172-4e63-8297-aa011f5de85a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SQL/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SQL/src/newcoder/入门/SQL29_计算用户的平均次日留存率.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/src/newcoder/入门/SQL29_计算用户的平均次日留存率.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scala.iml" beforeDir="false" afterPath="$PROJECT_DIR$/scala.iml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,6 +19,7 @@
     <option name="done" value="true" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MavenImportPreferences">
@@ -26,15 +35,17 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="2CswXfpTa7B961LJB0rmJT3cnjr" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -75,6 +86,7 @@
       <updated>1659604640406</updated>
       <workItem from="1659604643111" duration="350000" />
       <workItem from="1659958254554" duration="81000" />
+      <workItem from="1672995099095" duration="1558000" />
     </task>
     <servers />
   </component>
@@ -82,29 +94,9 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="346" y="93" key="#Project_Structure" timestamp="1659604663935">
-      <screen x="0" y="0" width="1707" height="1027" />
+    <state x="800" y="457" width="462" height="202" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog" timestamp="1672995114119">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="346" y="93" key="#Project_Structure/0.0.1707.1027@0.0.1707.1027" timestamp="1659604663935" />
-    <state width="1653" height="79" key="GridCell.Tab.0.bottom" timestamp="1659604994712">
-      <screen x="0" y="0" width="1707" height="1027" />
-    </state>
-    <state width="1653" height="79" key="GridCell.Tab.0.bottom/0.0.1707.1027@0.0.1707.1027" timestamp="1659604994712" />
-    <state width="1653" height="79" key="GridCell.Tab.0.center" timestamp="1659604994712">
-      <screen x="0" y="0" width="1707" height="1027" />
-    </state>
-    <state width="1653" height="79" key="GridCell.Tab.0.center/0.0.1707.1027@0.0.1707.1027" timestamp="1659604994712" />
-    <state width="1653" height="79" key="GridCell.Tab.0.left" timestamp="1659604994712">
-      <screen x="0" y="0" width="1707" height="1027" />
-    </state>
-    <state width="1653" height="79" key="GridCell.Tab.0.left/0.0.1707.1027@0.0.1707.1027" timestamp="1659604994712" />
-    <state width="1653" height="79" key="GridCell.Tab.0.right" timestamp="1659604994712">
-      <screen x="0" y="0" width="1707" height="1027" />
-    </state>
-    <state width="1653" height="79" key="GridCell.Tab.0.right/0.0.1707.1027@0.0.1707.1027" timestamp="1659604994712" />
-    <state x="206" y="0" key="SettingsEditor" timestamp="1659604911188">
-      <screen x="0" y="0" width="1707" height="1027" />
-    </state>
-    <state x="206" y="0" key="SettingsEditor/0.0.1707.1027@0.0.1707.1027" timestamp="1659604911188" />
+    <state x="800" y="457" width="462" height="202" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1672995114119" />
   </component>
 </project>
