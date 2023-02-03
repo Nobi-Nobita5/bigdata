@@ -2,21 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0f46ee5-a172-4e63-8297-aa011f5de85a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/a1Hello1.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQL/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/SQL156_各个视频的平均完播率.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/短视频/SQL156_各个视频的平均完播率.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/SQL157_平均播放进度大于60%的视频类别.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/短视频/SQL157_平均播放进度大于60%的视频类别.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/SQL158_每类视频近一个月的转发量率.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/短视频/SQL158_每类视频近一个月的转发量率.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/SQL159_每个创作者每月的涨粉率及截止当前的总粉丝量.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/短视频/SQL159_每个创作者每月的涨粉率及截止当前的总粉丝量.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/SQL160_国庆期间每类视频点赞量和转发量.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SQL/src/newcoder/SQL大厂真题/短视频/SQL160_国庆期间每类视频点赞量和转发量.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spark/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spark/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Hello$delayedInit$body.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Hello.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Hello1$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Hello1$delayedInit$body.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Hello1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Hello1.scala" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +119,7 @@
       <workItem from="1672995099095" duration="1558000" />
       <workItem from="1673168144305" duration="1449000" />
       <workItem from="1675147831261" duration="16271000" />
+      <workItem from="1675425904938" duration="597000" />
     </task>
     <servers />
   </component>
