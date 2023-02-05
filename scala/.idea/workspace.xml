@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0f46ee5-a172-4e63-8297-aa011f5de85a" name="Default Changelist" comment="">
-<<<<<<< HEAD
-      <change afterPath="$PROJECT_DIR$/../God-Of-BigData-master/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-=======
       <change beforePath="$PROJECT_DIR$/../Spark/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spark/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
->>>>>>> af03d5473a89c93af7cf35cdeb95f2e7bd55a0b9
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,12 +116,8 @@
       <workItem from="1659958254554" duration="81000" />
       <workItem from="1672995099095" duration="1558000" />
       <workItem from="1673168144305" duration="1449000" />
-<<<<<<< HEAD
-      <workItem from="1675147831261" duration="17698000" />
-=======
       <workItem from="1675147831261" duration="16271000" />
-      <workItem from="1675425904938" duration="597000" />
->>>>>>> af03d5473a89c93af7cf35cdeb95f2e7bd55a0b9
+      <workItem from="1675425904938" duration="600000" />
     </task>
     <servers />
   </component>
@@ -140,21 +130,21 @@
     </state>
     <state x="800" y="457" width="474" height="202" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1673168154989" />
     <state x="800" y="457" width="462" height="202" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1672995114119" />
-    <state width="1995" height="274" key="GridCell.Tab.0.bottom" timestamp="1675332506184">
+    <state width="1995" height="274" key="GridCell.Tab.0.bottom" timestamp="1675329287390">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="1995" height="274" key="GridCell.Tab.0.bottom/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675332506184" />
-    <state width="1995" height="274" key="GridCell.Tab.0.center" timestamp="1675332506183">
+    <state width="1995" height="274" key="GridCell.Tab.0.bottom/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675329287390" />
+    <state width="1995" height="274" key="GridCell.Tab.0.center" timestamp="1675329287390">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="1995" height="274" key="GridCell.Tab.0.center/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675332506183" />
-    <state width="1995" height="274" key="GridCell.Tab.0.left" timestamp="1675332506183">
+    <state width="1995" height="274" key="GridCell.Tab.0.center/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675329287389" />
+    <state width="1995" height="274" key="GridCell.Tab.0.left" timestamp="1675329287389">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="1995" height="274" key="GridCell.Tab.0.left/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675332506183" />
-    <state width="1995" height="274" key="GridCell.Tab.0.right" timestamp="1675332506184">
+    <state width="1995" height="274" key="GridCell.Tab.0.left/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675329287389" />
+    <state width="1995" height="274" key="GridCell.Tab.0.right" timestamp="1675329287390">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="1995" height="274" key="GridCell.Tab.0.right/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675332506184" />
+    <state width="1995" height="274" key="GridCell.Tab.0.right/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675329287390" />
   </component>
 </project>

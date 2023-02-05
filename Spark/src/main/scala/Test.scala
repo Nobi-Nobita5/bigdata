@@ -8,13 +8,14 @@ import org.apache.spark.sql.functions.avg
  */
 object Test {
   def main(args: Array[String]): Unit = {
-    //用sparkSession创建DataFrame
+    //用sparkSession创建DataFramem  7
     val spark = SparkSession
       .builder()
+      .master("local")//告诉spark,运行方式，本地单线程运行
       .appName("AuthorsAges")
       .getOrCreate()
     //创建包含名字和年龄的DataFrame
-    val dataDF = spark.createDataFrame(Seq(("Brooke",20),("Brooke",25))).toDF("name","age")
+    val dataDF = spark.createDataFrame(Seq(("Brooke",20),("Lisa",25))).toDF("name","age")
     //以name聚合，求平均年龄
     val avgDF =  dataDF.groupBy("name").agg(avg("age"))
     //展示结果，动作
