@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0f46ee5-a172-4e63-8297-aa011f5de85a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Spark/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spark/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spark/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spark/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spark/src/main/scala/Test.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../Spark/src/main/scala/Test.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/h3对象.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/h3对象.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/h5伴生对象.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/h5伴生对象.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,6 +123,8 @@
       <workItem from="1673168144305" duration="1449000" />
       <workItem from="1675147831261" duration="16271000" />
       <workItem from="1675425904938" duration="600000" />
+      <workItem from="1675927946025" duration="3759000" />
+      <workItem from="1675996522730" duration="1594000" />
     </task>
     <servers />
   </component>
@@ -146,5 +153,9 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1995" height="274" key="GridCell.Tab.0.right/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675329287390" />
+    <state x="642" y="229" width="764" height="654" key="find.popup" timestamp="1675996549294">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="642" y="229" width="764" height="654" key="find.popup/420.1440.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1675996549294" />
   </component>
 </project>

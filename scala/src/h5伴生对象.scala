@@ -6,6 +6,8 @@ class Marker private(val color:String) {
   override def toString(): String = "颜色标记："+ color
 
 }
+/*当单例对象与某个类共享同一个名称时，他被称作是这个类的伴生对象：companion object。你必须在同一个源文件里定义类和它的伴生对象。
+类被称为是这个单例对象的伴生类：companion class。类和它的伴生对象可以互相访问其私有成员。*/
 
 // 伴生对象，与类名字相同，可以访问类的私有属性和方法
 object Marker{

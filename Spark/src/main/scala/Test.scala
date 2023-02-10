@@ -1,5 +1,5 @@
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.avg
+import org.apache.spark.sql.functions._
 
 /**
  * @Author: Xionghx
