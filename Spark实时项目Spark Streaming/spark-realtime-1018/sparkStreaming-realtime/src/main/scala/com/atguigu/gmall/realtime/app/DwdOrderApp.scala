@@ -6,7 +6,7 @@ import java.util
 import com.alibaba.fastjson.serializer.SerializeConfig
 import com.alibaba.fastjson.{JSON, JSONObject}
 import com.atguigu.gmall.realtime.bean.{OrderDetail, OrderInfo, OrderWide}
-import com.atguigu.gmall.realtime.util.{MyEsUtils, MyKafkaUtils, MyOffsetsUtils, MyRedisUtils}
+import com.atguigu.gmall.realtime.util.{MyEsUtils, MyRedisUtils}
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.TopicPartition
 import org.apache.spark.SparkConf

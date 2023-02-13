@@ -2,7 +2,6 @@ package com.atguigu.gmall.realtime.util
 
 import java.util
 
-import org.apache.kafka.clients.consumer
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import org.apache.kafka.common.TopicPartition

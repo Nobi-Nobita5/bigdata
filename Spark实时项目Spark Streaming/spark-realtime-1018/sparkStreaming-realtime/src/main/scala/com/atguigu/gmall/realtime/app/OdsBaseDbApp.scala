@@ -3,7 +3,7 @@ package com.atguigu.gmall.realtime.app
 import java.util
 
 import com.alibaba.fastjson.{JSON, JSONObject}
-import com.atguigu.gmall.realtime.util.{MyKafkaUtils, MyOffsetsUtils, MyRedisUtils}
+import com.atguigu.gmall.realtime.util.MyRedisUtils
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.TopicPartition
 import org.apache.spark.SparkConf

@@ -13,11 +13,14 @@ import scala.collection.mutable
   *
   * 管理方案:
   *   1.  后置提交偏移量  ->  手动控制偏移量提交
-  *   2.  手动控制偏移量提交 ->  SparkStreaming提供了手动提交方案，但是我们不能用，因为我们会对DStream的结构进行转换.
+  *   2.  手动控制偏移量提交 ->  SparkStreaming提供了手动提交方案，但是我们不能用，因为我们会对DStream的结构进行转换：
+  *        （kafka 0.9版本以后consumer的偏移量是保存在kafka的_consumer_offsets主题中,
+ *            可以使用xxDstream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)提交偏移量
+ *            但有一个限制，即提交偏移量时，数据流必须是 InputDStream[ConsumerRecord[String, String]]这种结构）
   *   3.  手动的提取偏移量维护到redis中
-  *         -> 从kafka中消费到数据,先提取偏移量
+ *          -> 从kafka中消费数据之前，先到redis中读取偏移量， 使用读取到的偏移量到kakfa中消费数据
+  *         -> 从kafka中消费到数据,
   *         -> 等数据成功写出后，将偏移量存储到redis中
-  *         -> 从kafka中消费数据之前，先到redis中读取偏移量， 使用读取到的偏移量到kakfa中消费数据
   *
   *   4. 手动的将偏移量存储到redis中，每次消费数据需要使用存储的offset进行消费，每次消费数据后，要将本次消费的offset存储到redis中。
   */
