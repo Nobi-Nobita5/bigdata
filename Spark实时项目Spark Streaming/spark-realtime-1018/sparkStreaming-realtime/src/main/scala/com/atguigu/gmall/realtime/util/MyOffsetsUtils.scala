@@ -72,6 +72,7 @@ object MyOffsetsUtils {
 
   def readOffset(topic: String, groupId : String ):  Map[TopicPartition ,Long  ] ={
     val jedis: Jedis = MyRedisUtils.getJedisFromPool()
+    //在字符串 "offsets:" 后插入变量的值
     val redisKey : String = s"offsets:$topic:$groupId"
     val offsets: util.Map[String, String] = jedis.hgetAll(redisKey)
     println("读取到offset: " + offsets)

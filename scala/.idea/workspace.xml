@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0f46ee5-a172-4e63-8297-aa011f5de85a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Spark实时项目Spark Streaming/spark-realtime-1018/sparkStreaming-realtime/src/main/scala/com/atguigu/gmall/realtime/util/MyOffsetsUtils.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../Spark实时项目Spark Streaming/spark-realtime-1018/sparkStreaming-realtime/src/main/scala/com/atguigu/gmall/realtime/util/MyOffsetsUtils.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Marker$.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/scala/Marker$.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/Marker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/scala/Marker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/a1Hello1$.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/scala/a1Hello1$.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/scala/h3对象$.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/scala/h3对象$.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +122,7 @@
       <workItem from="1675927946025" duration="3759000" />
       <workItem from="1675996522730" duration="1594000" />
       <workItem from="1676099319794" duration="1611000" />
-      <workItem from="1676267854144" duration="1348000" />
+      <workItem from="1676267854144" duration="2034000" />
     </task>
     <servers />
   </component>
