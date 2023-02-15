@@ -63,7 +63,7 @@ object OdsBaseLogApp {
     )
 
     //kafkaDStream.print(100)，打印报错
-    //此处的ConsumerRecord不支持Serializable接口，如果需要获取DStream数据打印并分流传递，则需要转换数据结构
+    //此处的ConsumerRecord不支持Serializable接口，如果需要获取DStream数据打印并分流传递，则需要转换数据结构。
     //3. 处理数据
     //3.1 转换数据结构
     val jsonObjDStream: DStream[JSONObject] = offsetRangesDStream.map(
@@ -104,8 +104,8 @@ object OdsBaseLogApp {
       rdd => {
 
         rdd.foreachPartition(//每个分区
-          jsonObjIter => {
-            for (jsonObj <- jsonObjIter) {//每个JSON数据对象
+          jsonObjIter => {//jsonObjIter是包含分区中所有数据的一个迭代器
+            for (jsonObj <- jsonObjIter) {//所有JSON数据对象
               //分流过程
               //分流错误数据
               val errObj: JSONObject = jsonObj.getJSONObject("err")
@@ -206,8 +206,8 @@ object OdsBaseLogApp {
             }
             // foreachPartition里面:  Executor段执行， 每批次每分区执行一次
 
-
-            /*KafkaProducer.flush()，强制将生产者缓存中的所有待发送记录立即发送到Kafka集群中
+            /*
+            * KafkaProducer.flush()，强制将生产者缓存中的所有待发送记录立即发送到Kafka集群中
             * 当生产者发送消息时，它会缓存消息，并在后台定期发送批量数据。
             * 默认情况下，生产者在内部管理事务以确保发送数据的完整性。
             * 如果您需要确保生产者在程序退出前立即发送所有缓存数据，可以使用flush()方法。*/
@@ -219,16 +219,16 @@ object OdsBaseLogApp {
         /*
         -------------------------------------------------------------
         rdd.foreach(
-          jsonObj => {
-            //foreach里面:  提交offset。-->  executor执行, 每条数据执行一次.
+          jsonObj => { //jsonObj是RDD中的每个对象
+            //foreach里面:  提交offset。-->  executor执行, 每条数据执行一次.操作每条数据一定是在executor端执行。
             //foreach里面:  刷写kafka缓冲区。--> executor执行, 每条数据执行一次.  相当于是同步发送消息.
           }
         )
          */
 
-        //foreachRDD里面，forech外面: 提交offset。-->  Driver段执行，一批次执行一次（周期性）
+        //foreachRDD里面，forech外面: 后置提交offset到redis，避免数据丢失 -->  Driver段执行，一批次执行一次（周期性）
         MyOffsetsUtils.saveOffset(topicName,groupId,offsetRanges)
-        //foreachRDD里面，forech外面: 刷写Kafka缓冲区。 --> Driver段执行，一批次执行一次（周期性） 分流是在executor端完成，driver端做刷写，刷的不是同一个对象的缓冲区.
+        //foreachRDD里面，forech外面: 刷写Kafka缓冲区。 --> Driver段执行，一批次执行一次（周期性） 分流是在executor端完成，不能在driver端做刷写，刷的不是同一个对象的缓冲区.
       }
     )
     // foreachRDD外面:  提交offsets。 -->  Driver执行，每次启动程序执行一次.
