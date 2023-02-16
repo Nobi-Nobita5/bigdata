@@ -3,7 +3,7 @@ package com.atguigu.gmall.realtime.app
 import java.util
 
 import com.alibaba.fastjson.{JSON, JSONObject}
-import com.atguigu.gmall.realtime.util.MyRedisUtils
+import com.atguigu.gmall.realtime.util.{MyKafkaUtils, MyOffsetsUtils, MyRedisUtils}
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.TopicPartition
 import org.apache.spark.SparkConf
@@ -123,7 +123,7 @@ object OdsBaseDbApp {
               // 提取操作类型
               val operType: String = jsonObj.getString("type")
 
-              val opValue: String = operType match {
+              val opValue: String = operType match { //模式匹配
                 case "bootstrap-insert" => "I"
                 case "insert" => "I"
                 case "update" => "U"
