@@ -151,15 +151,19 @@ object OdsBaseDbApp {
 
                 if(dimTablesBC.value.contains(tableName)){
                   //维度数据
-                  // 类型 : string  hash
-                  //        hash ： 整个表存成一个hash。 要考虑目前数据量大小和将来数据量增长问题 及 高频访问问题.
-                  //        hash :  一条数据存成一个hash.
-                  //        String : 一条数据存成一个jsonString.
-                  // key :  DIM:表名:ID
+                  // 类型 : list，set，zset : key为表名，多个value为一条数据，不可行，因为不方便定位每一条数据。
+                  //                          key为主键id，多个value为每个字段的数据，不可行，因为不方便定位每个字段的数据。
+                  //                          故集合与列表都不合适。
+                  //        hash ： 整个表存成一个hash。key是表名，value是主键id和一条数据。 要考虑目前数据量大小和将来数据量增长问题 及 高频访问问题。
+                  //        hash :  一条数据存成一个hash。 key是主键id，value是字段名和数据。没有单独调用某个字段的场景，整查一条数据需要解析很多个field(字段)。
+                  //        String : 一条数据存成一个jsonString. key是主键id，value是json字符串。
+                  //                 不用担心单表数据量过大，可以让redis集群负载均衡；整查一条数据也比hash方便。
+                  //                 故最终采用String方案。
+                  // key :  DIM:表名:主键ID
                   // value : 整条数据的jsonString
                   // 写入API: set
                   // 读取API: get
-                  // 过期:  不过期
+                  // 过期:  不过期（维度数据）
                   //提取数据中的id
                   val dataObj: JSONObject = jsonObj.getJSONObject("data")
                   val id: String = dataObj.getString("id")
