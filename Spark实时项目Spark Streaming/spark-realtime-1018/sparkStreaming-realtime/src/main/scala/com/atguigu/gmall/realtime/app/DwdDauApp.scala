@@ -1,13 +1,13 @@
 package com.atguigu.gmall.realtime.app
 
 import java.text.SimpleDateFormat
-import java.time.{LocalDate, Period}
+import java.time.{LocalDate, Period, ZoneId}
 import java.{lang, util}
 import java.util.Date
 
 import com.alibaba.fastjson.{JSON, JSONObject}
 import com.atguigu.gmall.realtime.bean.{DauInfo, PageLog}
-import com.atguigu.gmall.realtime.util.{MyBeanUtils, MyEsUtils, MyKafkaUtils, MyOffsetsUtils, MyRedisUtils}
+import com.atguigu.gmall.realtime.util.{MyBeanUtils, MyEsUtils, MyKafkaUtils, MyOffsetsUtils, MyRedisUtils, TimeUtils_Test}
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.TopicPartition
 import org.apache.spark.SparkConf
@@ -73,7 +73,7 @@ object DwdDauApp {
       }
     )
 
-    pageLogDStream.cache()
+    pageLogDStream.cache() //缓存处理Dstream流，方便打印操作后可以再次操作。因为行动操作触发后，该Dstream流就不存在了
     pageLogDStream.foreachRDD(
       rdd => println("自我审查前: " + rdd.count())
     )
@@ -82,7 +82,7 @@ object DwdDauApp {
     val filterDStream: DStream[PageLog] = pageLogDStream.filter(
       pageLog => pageLog.last_page_id == null
     )
-    filterDStream.cache()
+    filterDStream.cache()//缓存处理Dstream流，方便打印操作后可以再次操作。因为行动操作触发后，该Dstream流就不存在了
     filterDStream.foreachRDD(
       rdd => {
         println("自我审查后: " + rdd.count())
@@ -98,12 +98,16 @@ object DwdDauApp {
     // 写入API: sadd
     // 读取API: smembers
     // 过期:  24小时
-
-    //filterDStream.filter()  // 每条数据执行一次. redis的连接太频繁.
+    //filterDStream.filter()  // 该算子，每条数据执行一次. redis的连接太频繁.
     // [A, B , C ] => [ AA ,BB ]
-    val redisFilterDStream: DStream[PageLog] = filterDStream.mapPartitions(
+
+    // 此处使用mapPartitions算子实现过滤功能，每批次每分区执行一次
+    val redisFilterDStream: DStream[PageLog] = filterDStream.mapPartitions(//mapPartitions和foreachPartition的区别：
+                                                                           //前者是转换操作，可以获取返回值，而foreachPartition没有返回值并且是action操作
       pageLogIter => {
         val pageLogList: List[PageLog] = pageLogIter.toList
+        //pageLogIter是个迭代器，下方代码调用size()，已经进行了一次迭代，该迭代器中数据就会随之消失。
+        //我们后续还得用到该迭代器，所以进行toList操作生成pageLogList
         println("第三方审查前: " + pageLogList.size)
 
         //存储要的数据
@@ -137,8 +141,10 @@ object DwdDauApp {
           }
 
            */
-          val isNew: lang.Long = jedis.sadd(redisDauKey, mid) // 判断包含和写入实现了原子操作.
+          val isNew: lang.Long = jedis.sadd(redisDauKey, mid) // 判断是否包含 和 写入实现了原子操作.
           if (isNew == 1L) {
+            val tomorrowMidnight = TimeUtils_Test.tomorrowMidnightTimestamp
+            jedis.expireAt(redisDauKey,tomorrowMidnight) //设置超时时间为第二天0点
             pageLogs.append(pageLog)
           }
         }
@@ -157,7 +163,7 @@ object DwdDauApp {
         val jedis: Jedis = MyRedisUtils.getJedisFromPool()
         for (pageLog <- pageLogIter) {
           val dauInfo: DauInfo = new DauInfo()
-          //1. 将pagelog中以后的字段拷贝到DauInfo中
+          //1. 将pagelog中已有的字段拷贝到DauInfo中
           //笨办法: 将pageLog中的每个字段的值挨个提取，赋值给dauInfo中对应的字段。
           //dauInfo.mid = pageLog.mid
           //好办法: 通过对象拷贝来完成.
@@ -186,7 +192,6 @@ object DwdDauApp {
           //2.2  地区信息维度
           // redis中:
           // 现在: DIM:BASE_PROVINCE:1
-          // 之前: DIM:BASE_PROVINCE:110000
           val provinceID: String = dauInfo.province_id
           val redisProvinceKey: String = s"DIM:BASE_PROVINCE:$provinceID"
           val provinceJson: String = jedis.get(redisProvinceKey)

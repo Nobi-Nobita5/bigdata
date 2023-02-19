@@ -33,7 +33,7 @@ case class DauInfo(
                     var ts : Long
                   ) {
 
-  def this(){
+  def this(){//无参构造器
     this(null,null,null,null,null,null,null,null,null,null ,null ,null,null,0L,null,null,null,null,null,null,null,null,0L)
   }
 

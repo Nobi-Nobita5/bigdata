@@ -100,10 +100,12 @@ object OdsBaseLogApp {
     // 页面数据: 拆分成页面访问， 曝光， 事件 分别发送到对应的topic
     // 启动数据: 发动到对应的topic
 
-    jsonObjDStream.foreachRDD(//行动算子
+    jsonObjDStream.foreachRDD(//foreachRDD(func)是sparkStreaming的OutputOperation算子。
+                              // 最通用的输出方式，它将函数 func 应用于从流生成的每个 RDD。
+                              // 但是foreachRDD并不会触发立即处理，必须在碰到sparkcore的foreach或者foreachPartition算子后，才会触发action动作。
       rdd => {
 
-        rdd.foreachPartition(//每个分区
+        rdd.foreachPartition(//foreachPartition是spark-core的算子，作用于每个分区
           jsonObjIter => {//jsonObjIter是包含分区中所有数据的一个迭代器
             for (jsonObj <- jsonObjIter) {//所有JSON数据对象
               //分流过程
@@ -141,9 +143,12 @@ object OdsBaseLogApp {
                   var pageLog =
                     PageLog(mid,uid,ar,ch,isNew,md,os,vc,ba,pageId,lastPageId,pageItem,pageItemType,duringTime,sourceType,ts)
                   //发送到DWD_PAGE_LOG_TOPIC
-                  /*Java封装的对象一定有getter()、setter()方法，
-                  * com.alibaba.fastjson使用JAVA开发，其中的JSON.toJSONString()方法就要求参数对象必须实现getter()、setter()方法，
-                  * 而此处的pageLog scala样例类没有该方法，故使用new SerializeConfig(true)，基于字段转换成JSON字符串*/
+                  /*
+                  * scala中，JSON.toJSONString(pageLog) 无法直接打印 pageLog 对象的原因是 fastjson 库并不支持 Scala 对象的序列化。
+                  * fastjson 库是为 Java 设计的，因此它默认只能序列化 Java 对象。
+                  * 如果你要序列化 Scala 对象，你需要使用 fastjson 库中的 Scala 模块，或者使用其它支持 Scala 序列化的 JSON 库。
+                  * 在调用 JSON.toJSONString(pageLog, new SerializeConfig(true)) 时，传入的 SerializeConfig 对象会启用 Scala 模块，
+                  * 基于字段 序列化该对象 并转换成JSON字符串*/
                   MyKafkaUtils.send(DWD_PAGE_LOG_TOPIC , JSON.toJSONString(pageLog , new SerializeConfig(true)))
 
                   //提取曝光数据

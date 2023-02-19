@@ -84,12 +84,12 @@ object OdsBaseDbApp {
 
     //Redis连接写到哪里???
     // foreachRDD外面:  driver  ，连接对象不能序列化，不能传输
-    // foreachRDD里面, foreachPartition外面 : driver  ，连接对象不能序列化，不能传输
+    // foreachRDD里面, foreachPartition外面 : driver  ，每批次获取一次连接，连接对象不能序列化，不能传输
     // foreachPartition里面 , 循环外面：executor ， 每分区数据开启一个连接，用完关闭.
     // foreachPartition里面,循环里面:  executor ， 每条数据开启一个连接，用完关闭， 太频繁。
     //
     jsonObjDStream.foreachRDD(
-      rdd => {
+      rdd => {//操作每批次的每个RDD抽象，用foreachPartition每批次每分区执行一次
         //如何动态配置表清单???
         // 将表清单维护到redis中，实时任务中动态的到redis中获取表清单.
         // 类型: set
@@ -111,13 +111,17 @@ object OdsBaseDbApp {
         //维度表清单
         val dimTables: util.Set[String] = jedis.smembers(redisDimKeys)
         println("dimTables: " + dimTables)
-        //做成广播变量
+        //做成广播变量,extends Serializable,可以在各个executor之间传播，不过util.Set也是可以序列化的。
+        //    广播变量：共享只读变量。
+        //             非广播变量会传递到executor中的每个task中。
+        //             广播变量只会传递到每个executor中。供executor中的所有task读取。
+        //             在该变量数据量很大的时候，可以明显减少传递变量的网络带宽消耗。
         val dimTablesBC: Broadcast[util.Set[String]] = ssc.sparkContext.broadcast(dimTables)
         jedis.close()
 
         rdd.foreachPartition(
           jsonObjIter => {
-            // 开启redis连接
+            // 开启redis连接，executor端执行，每批次每分区执行一次。
             val jedis: Jedis = MyRedisUtils.getJedisFromPool()
             for (jsonObj <- jsonObjIter) {
               // 提取操作类型

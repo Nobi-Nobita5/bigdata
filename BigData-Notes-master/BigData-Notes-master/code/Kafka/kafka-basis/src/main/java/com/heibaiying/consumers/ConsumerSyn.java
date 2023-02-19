@@ -15,10 +15,10 @@ import java.util.Properties;
 public class ConsumerSyn {
 
     public static void main(String[] args) {
-        String topic = "Hello-Kafka";
-        String group = "group1";
+        String topic = "ODS_BASE_LOG_1018";
+        String group = "group_test";
         Properties props = new Properties();
-        props.put("bootstrap.servers", "hadoop001:9092");
+        props.put("bootstrap.servers", "hadoop102:9092,hadoop103:9092,hadoop104:9092");
         props.put("group.id", group);
         props.put("enable.auto.commit", false);
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
