@@ -1032,6 +1032,7 @@ PUT   _template/gmall_dau_info_template
   "index_patterns": ["gmall_dau_info_1018*"],                  
   "settings": {                                             
     "number_of_shards": 3 ,
+    # 返回窗口的最大数据量
     "index.max_result_window" :"5000000"
   },
   "aliases" : { 
@@ -1108,7 +1109,7 @@ PUT   _template/gmall_dau_info_template
 }
 
 
-GET gmall_dau_info_1018_2022-03-28/_search
+GET gmall_dau_info_1018_2023-02-21/_search
 
 
 # 订单宽表模板
@@ -1228,7 +1229,7 @@ PUT  _template/gmall_order_wide_template
   }
 
 
-GET gmall_order_wide_1018_2022-03-29/_search
+GET gmall_order_wide_1018_2023-02-21/_search
 
 
 GET gmall_dau_info_1018_2022-03-28/_search

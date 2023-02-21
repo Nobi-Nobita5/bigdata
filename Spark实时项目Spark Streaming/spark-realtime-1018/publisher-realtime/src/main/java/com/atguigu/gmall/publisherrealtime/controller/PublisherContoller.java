@@ -4,6 +4,7 @@ import com.atguigu.gmall.publisherrealtime.bean.NameValue;
 import com.atguigu.gmall.publisherrealtime.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.Map;
  * 控制层
  */
 @RestController
+//包括ResponseBoy和Controller
 public class PublisherContoller {
 
 
@@ -58,6 +60,13 @@ public class PublisherContoller {
      * 日活分析
      * @param td
      * @return
+     * { dauTotal:123,
+     *  dauYd:{"12":90,"13":33,"17":166 },
+     *  dauTd:{"11":232,"15":45,"18":76}
+     * }
+     * Map<String, Object>类型的返回值满足上述要求
+     * 加上responseBody，Map自动转换为json数据
+     * 也可加在类定义上
      */
     @GetMapping("dauRealtime")
     public Map<String, Object>  dauRealtime(@RequestParam("td") String td  ){

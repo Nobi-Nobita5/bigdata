@@ -262,7 +262,7 @@ object DwdDauApp {
   /**
     * 状态还原
     *
-    * 在每次启动实时任务时， 进行一次状态还原。 以ES为准, 将所以的mid提取出来，覆盖到Redis中.
+    * 在每次启动实时任务时， 进行一次状态还原。 以ES为准, 将所有的mid提取出来，覆盖到Redis中.
     */
 
   def revertState(): Unit ={
@@ -271,7 +271,7 @@ object DwdDauApp {
     val indexName : String = s"gmall_dau_info_1018_$date"
     val fieldName : String = "mid"
     val mids: List[ String ] = MyEsUtils.searchField(indexName , fieldName)
-    //删除redis中记录的状态（所有的mid）
+    //删除redis中记录的状态（所有的mid），无论ES中是否有数据，redis中的数据都要删除。
     val jedis: Jedis = MyRedisUtils.getJedisFromPool()
     val redisDauKey : String = s"DAU:$date"
     jedis.del(redisDauKey)
@@ -280,9 +280,10 @@ object DwdDauApp {
       /*for (mid <- mids) {
         jedis.sadd(redisDauKey , mid )
       }*/
+      //mids数据是固定的，没必要一个一个写，以下操作可以实现批次写入。pipline(管道)，将数据先加入到管道中，再批量写入
       val pipeline: Pipeline = jedis.pipelined()
       for (mid <- mids) {
-        pipeline.sadd(redisDauKey , mid )  //不会直接到redis执行
+        pipeline.sadd(redisDauKey , mid )  //不会直接到redis执行，数据放入管道
       }
 
       pipeline.sync()  // 到redis执行

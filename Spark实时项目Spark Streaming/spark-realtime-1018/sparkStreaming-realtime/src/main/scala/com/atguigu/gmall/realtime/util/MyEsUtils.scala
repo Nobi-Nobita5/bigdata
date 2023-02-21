@@ -40,8 +40,8 @@ object MyEsUtils {
   }
 
   /**
-    * 1. 批写
-    * 2. 幂等写
+    * 1. 批量(bulk)写
+    * 2. 幂等写(指定doc_id)
     */
   def bulkSave(indexName : String , docs :  List[(String , AnyRef)]  ): Unit ={
     val bulkRequest: BulkRequest = new BulkRequest(indexName)
@@ -70,6 +70,7 @@ object MyEsUtils {
     val mids: ListBuffer[String] = ListBuffer[String]()
     val searchRequest: SearchRequest = new SearchRequest(indexName)
     val searchSourceBuilder: SearchSourceBuilder = new SearchSourceBuilder()
+    //获取fieldName不为空的document
     searchSourceBuilder.fetchSource(fieldName,null).size(100000)
     searchRequest.source(searchSourceBuilder)
     val searchResponse: SearchResponse =
