@@ -133,6 +133,8 @@ public class PublisherMapperImpl  implements PublisherMapper {
         searchSourceBuilder.size(0);
         //query
         MatchQueryBuilder matchQueryBuilder =
+                //“小米手机”进行分词匹配，会拆成“小米”和“手机”，满足其中一个的document都会被查出来
+                //而使用operator的AND操作，则要求“小米”和“手机”都包含，才会被查询出来
                 QueryBuilders.matchQuery("sku_name", itemName).operator(Operator.AND);
         searchSourceBuilder.query(matchQueryBuilder);
         //group

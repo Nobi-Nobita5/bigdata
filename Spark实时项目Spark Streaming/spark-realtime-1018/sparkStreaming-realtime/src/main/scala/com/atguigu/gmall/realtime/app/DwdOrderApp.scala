@@ -190,11 +190,13 @@ object DwdOrderApp {
     //    orderInfoKVDStream.join(orderDetailKVDStream)
 
     // 解决:
-    //  1. 扩大采集周期 ， 治标不治本
-    //  2. 使用窗口,治标不治本 , 还要考虑数据去重 、 Spark状态的缺点
+    //  1. 扩大采集周期 ，一个大周期执行一个微型批， 确保能关联。这样还搞啥实时，搞离线算球了
+    //  2. 使用窗口,治标不治本 , 还要考虑数据去重（这里是双流JOIN，与单流式聚合不同，会导致窗口内的数据不断关联产生重复数据） 、 Spark状态的缺点（窗口越大，需要的资源越多）
     //  3. 首先使用fullOuterJoin,保证join成功或者没有成功的数据都出现到结果中.
-    //     让双方都多两步操作, 到缓存中找对的人， 把自己写到缓存中
-    val orderJoinDStream: DStream[(Long, (Option[OrderInfo], Option[OrderDetail]))] =
+    //     让双方都多两步操作, 到缓存中找对的人， 把自己写到缓存中。structure streaming的双流JOIN也是采用的第三种策略。
+    //     1）structure streaming中这种策略 会设置水印和事件时间的约束条件，spark引擎会自动计算状态保留时间，不然状态会无限增长，内存会不够用。
+    //     2）此处我们手动设置了redis过期时间为24小时。严格来说也需要实现，设置水印和事件时间的约束所达到的效果。不然24小时，数据量大的话很可能内存就不够了。
+    val orderJoinDStream: DStream[(Long, (Option[OrderInfo], Option[OrderDetail]))] = //Option表示全关联后，可以有，也可以没有
             orderInfoKVDStream.fullOuterJoin(orderDetailKVDStream)
 
     val orderWideDStream: DStream[OrderWide] = orderJoinDStream.mapPartitions(
@@ -281,6 +283,8 @@ object DwdOrderApp {
       rdd => {
         rdd.foreachPartition(
           orderWideIter => {
+            //将orderWideIter由orderWide转换为(String, OrderWide)，
+            //String用于向ES指定索引中存储数据时，作为ID使用，以实现幂等写入
             val orderWides: List[(String, OrderWide)] =
                 orderWideIter.map( orderWide => (orderWide.detail_id.toString , orderWide)).toList
             if(orderWides.size > 0 ){

@@ -28,6 +28,13 @@ public class PublisherContoller {
      *
      * 交易分析 - 明细
      * http://bigdata.gmall.com/detailByItem?date=2021-02-02&itemName=小米手机&pageNo=1&pageSize=20
+     *
+     * [
+     * { total: 24},
+     * { detail: Object}
+     * ]
+     * 详细一条订单数据封装在Object中
+     * 返回Map<String, Object>
      */
     @GetMapping("detailByItem")
     public Map<String, Object> detailByItem(@RequestParam("date") String date ,
@@ -44,6 +51,18 @@ public class PublisherContoller {
      *
      * http://bigdata.gmall.com/statsByItem?itemName=小米手机&date=2021-02-02&t=age
      * http://bigdata.gmall.com/statsByItem?itemName=小米手机&date=2021-02-02&t=gender
+     * [
+     * { value: 1048, name: "男" },
+     * { value: 735, name: "女" }
+     * ]
+     *
+     * [
+     * { value: 1048, name: "20 岁以下" },
+     * { value: 735, name: "20 岁至 29 岁" } ,
+     * { value: 34, name: "30 岁以上" }
+     * ]
+     *
+     * 封装NameValue对象，返回List<NameValue>的Json串
      */
     @GetMapping("statsByItem")
     public List<NameValue> statsByItem(

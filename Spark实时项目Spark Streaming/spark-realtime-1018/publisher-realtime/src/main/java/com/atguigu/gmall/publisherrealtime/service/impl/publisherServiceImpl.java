@@ -24,6 +24,7 @@ public class publisherServiceImpl implements PublisherService {
     @Override
     public Map<String, Object> doDetailByItem(String date, String itemName, Integer pageNo, Integer pageSize) {
         //计算分页开始位置
+        //from 0,size = 20,展示ES中1~20条数据
         int from = (pageNo - 1) * pageSize;
         Map<String, Object>  searchResults = publisherMapper.searchDetailByItem(date, itemName, from , pageSize);
 
