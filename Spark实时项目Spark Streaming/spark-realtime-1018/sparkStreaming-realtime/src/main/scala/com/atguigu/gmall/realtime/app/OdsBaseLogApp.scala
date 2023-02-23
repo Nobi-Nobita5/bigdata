@@ -53,6 +53,7 @@ object OdsBaseLogApp {
     }
 
     // TODO 补充: 不对DStream流中的数据做任何处理，可以从当前消费到的数据中提取offsets
+    // TODO 在对当前流进行处理之前，拿到【本批次】的偏移量信息。在数据写出之后，将该偏移量信息提交（即写入Redis保存）
     var  offsetRanges: Array[OffsetRange] = null
     val offsetRangesDStream: DStream[ConsumerRecord[String, String]] = kafkaDStream.transform(
       rdd => {
@@ -232,6 +233,7 @@ object OdsBaseLogApp {
          */
 
         //foreachRDD里面，forech外面: 后置提交offset到redis，避免数据丢失 -->  Driver段执行，一批次执行一次（周期性）
+        //offsetRanges包含该批次的全部offset信息
         MyOffsetsUtils.saveOffset(topicName,groupId,offsetRanges)
         //foreachRDD里面，forech外面: 刷写Kafka缓冲区。 --> Driver段执行，一批次执行一次（周期性） 分流是在executor端完成，不能在driver端做刷写，刷的不是同一个对象的缓冲区.
       }

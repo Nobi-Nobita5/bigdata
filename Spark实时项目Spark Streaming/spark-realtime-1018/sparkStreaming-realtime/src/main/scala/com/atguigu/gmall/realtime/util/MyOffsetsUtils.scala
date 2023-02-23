@@ -38,7 +38,7 @@ object MyOffsetsUtils {
     *            从传入进来的offset中提取关键信息
     *        在redis中怎么存?
     *          类型: hash
-    *          key : groupId + topic
+    *          key : topic + groupId
     *          value: partition - offset  ， partition - offset 。。。。
     *          写入API: hset / hmset
     *          读取API: hgetall
@@ -49,7 +49,7 @@ object MyOffsetsUtils {
       val offsets: util.HashMap[String, String] = new util.HashMap[String,String]()
       for (offsetRange <- offsetRanges) {
         val partition: Int = offsetRange.partition
-        val endOffset: Long = offsetRange.untilOffset
+        val endOffset: Long = offsetRange.untilOffset //拿到每个分区的最新偏移量endOffset
         offsets.put(partition.toString,endOffset.toString)
       }
       println("提交offset: " + offsets)

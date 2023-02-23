@@ -59,9 +59,11 @@ object MyKafkaUtils {
   def getKafkaDStream(ssc : StreamingContext , topic: String  , groupId:String ,  offsets: Map[TopicPartition, Long]  ) ={
     consumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG , groupId)
 
+      //ConsumerRecord[String, String]，代表消费到的数据[K,V]类型是[String, String],调用ConsumerStrategies.Subscribe方法时即可指定泛型。
+      // 不指定的话ConsumerRecord无法自动识别到消费的数据类型，会自动接收成ConsumerRecord[Nothing, Nothing]
     val kafkaDStream: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream(ssc,
       LocationStrategies.PreferConsistent,
-      ConsumerStrategies.Subscribe[String, String](Array(topic), consumerConfigs , offsets))
+      ConsumerStrategies.Subscribe[String, String](Array(topic), consumerConfigs , offsets))//Array(topic)，消费者组可以基于多个topic进行消费
     kafkaDStream
   }
 

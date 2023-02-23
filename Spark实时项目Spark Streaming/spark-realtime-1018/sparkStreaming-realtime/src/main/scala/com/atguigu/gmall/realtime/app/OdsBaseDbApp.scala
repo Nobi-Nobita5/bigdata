@@ -85,7 +85,7 @@ object OdsBaseDbApp {
     //Redis连接写到哪里???
     // foreachRDD外面:  driver  ，连接对象不能序列化，不能传输
     // foreachRDD里面, foreachPartition外面 : driver  ，每批次获取一次连接，连接对象不能序列化，不能传输
-    // foreachPartition里面 , 循环外面：executor ， 每分区数据开启一个连接，用完关闭.
+    // foreachPartition里面 , 循环外面：executor ， 每分区数据开启一个连接，用完关闭。选用此方案
     // foreachPartition里面,循环里面:  executor ， 每条数据开启一个连接，用完关闭， 太频繁。
     //
     jsonObjDStream.foreachRDD(
@@ -124,7 +124,7 @@ object OdsBaseDbApp {
             // 开启redis连接，executor端执行，每批次每分区执行一次。
             val jedis: Jedis = MyRedisUtils.getJedisFromPool()
             for (jsonObj <- jsonObjIter) {
-              // 提取操作类型
+              // 提取操作类型，maxwell监控采集来的Json格式数据，其中type表示该条数据的操作类型
               val operType: String = jsonObj.getString("type")
 
               val opValue: String = operType match { //模式匹配
@@ -158,7 +158,7 @@ object OdsBaseDbApp {
                   // 类型 : list，set，zset : key为表名，多个value为一条数据，不可行，因为不方便定位每一条数据。
                   //                          key为主键id，多个value为每个字段的数据，不可行，因为不方便定位每个字段的数据。
                   //                          故集合与列表都不合适。
-                  //        hash ： 整个表存成一个hash。key是表名，value是主键id和一条数据。 要考虑目前数据量大小和将来数据量增长问题 及 高频访问问题。
+                  //        hash ： 整个表存成一个hash。key是表名，value是主键id和一条数据。 要考虑目前单表数据量大小和将来数据量增长问题 及 高频访问问题。一个key是存放在redis集群中的一个节点上的。
                   //        hash :  一条数据存成一个hash。 key是主键id，value是字段名和数据。没有单独调用某个字段的场景，整查一条数据需要解析很多个field(字段)。
                   //        String : 一条数据存成一个jsonString. key是主键id，value是json字符串。
                   //                 不用担心单表数据量过大，可以让redis集群负载均衡；整查一条数据也比hash方便。
