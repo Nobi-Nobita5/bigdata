@@ -189,7 +189,7 @@ object DwdOrderApp {
     //val orderJoinDStream: DStream[(Long, (OrderInfo, OrderDetail))] =
     //    orderInfoKVDStream.join(orderDetailKVDStream)
 
-    // 解决:
+    // 解决: 最终方案：【每个批次没有根据id关联上的表的数据，存入缓存】。
     //  1. 扩大采集周期 ，一个大周期执行一个微型批， 确保能关联。这样还搞啥实时，搞离线算球了
     //  2. 使用窗口,治标不治本 , 还要考虑数据去重（这里是双流JOIN，与单流式聚合不同，会导致窗口内的数据不断关联产生重复数据） 、 Spark状态的缺点（窗口越大，需要的资源越多）
     //  3. 首先使用fullOuterJoin,保证join成功或者没有成功的数据都出现到结果中.
@@ -217,33 +217,33 @@ object DwdOrderApp {
               orderWides.append(orderWide)
             }
             //orderInfo有，orderDetail没有
-
-            //orderInfo写缓存
-            // 类型:  string
-            // key :   ORDERJOIN:ORDER_INFO:ID
-            // value :  json
-            // 写入API:  set
-            // 读取API:  get
-            // 是否过期: 24小时
-            val redisOrderInfoKey: String = s"ORDERJOIN:ORDER_INFO:${orderInfo.id}"
-            //jedis.set(redisOrderInfoKey , JSON.toJSONString(orderInfo , new SerializeConfig(true)))
-            //jedis.expire(redisOrderInfoKey , 24 * 3600)
-            jedis.setex(redisOrderInfoKey, 24 * 3600, JSON.toJSONString(orderInfo, new SerializeConfig(true)))
-
-            //orderInfo读缓存
-            val redisOrderDetailKey: String = s"ORDERJOIN:ORDER_DETAIL:${orderInfo.id}"
-            val orderDetails: util.Set[String] = jedis.smembers(redisOrderDetailKey)
-            if (orderDetails != null && orderDetails.size() > 0) {
-              import scala.collection.JavaConverters._
-              for (orderDetailJson <- orderDetails.asScala) {
-                val orderDetail: OrderDetail = JSON.parseObject(orderDetailJson, classOf[OrderDetail])
-                //组装成orderWide
-                val orderWide: OrderWide = new OrderWide(orderInfo, orderDetail)
-                //加入到结果集中
-                orderWides.append(orderWide)
+            if (orderDetailOp.isEmpty) {
+              //orderInfo读缓存
+              val redisOrderDetailKey: String = s"ORDERJOIN:ORDER_DETAIL:${orderInfo.id}"
+              val orderDetails: util.Set[String] = jedis.smembers(redisOrderDetailKey)
+              if (orderDetails != null && orderDetails.size() > 0) {
+                import scala.collection.JavaConverters._
+                for (orderDetailJson <- orderDetails.asScala) {
+                  val orderDetail: OrderDetail = JSON.parseObject(orderDetailJson, classOf[OrderDetail])
+                  //组装成orderWide
+                  val orderWide: OrderWide = new OrderWide(orderInfo, orderDetail)
+                  //加入到结果集中
+                  orderWides.append(orderWide)
+                }
+              }else{//读不到orderDetail的缓存，再把orderInfo写进redis
+                //orderInfo写缓存
+                // 类型:  string
+                // key :   ORDERJOIN:ORDER_INFO:ID
+                // value :  json
+                // 写入API:  set
+                // 读取API:  get
+                // 是否过期: 24小时
+                val redisOrderInfoKey: String = s"ORDERJOIN:ORDER_INFO:${orderInfo.id}"
+                //jedis.set(redisOrderInfoKey , JSON.toJSONString(orderInfo , new SerializeConfig(true)))
+                //jedis.expire(redisOrderInfoKey , 24 * 3600)
+                jedis.setex(redisOrderInfoKey, 24 * 3600, JSON.toJSONString(orderInfo, new SerializeConfig(true)))
               }
             }
-
           } else {
             //orderInfo没有， orderDetail有
             val orderDetail: OrderDetail = orderDetailOp.get
@@ -256,7 +256,7 @@ object DwdOrderApp {
               val orderWide: OrderWide = new OrderWide(orderInfo, orderDetail)
               //加入到结果集中
               orderWides.append(orderWide)
-            } else {
+            } else {//读不到orderInfo的缓存，再把orderDetail写进redis
               //写缓存
               // 类型:   set
               // key :   ORDERJOIN:ORDER_DETAIL:ORDER_ID
@@ -295,6 +295,11 @@ object DwdOrderApp {
               //写入到ES
               MyEsUtils.bulkSave(indexName , orderWides)
             }
+            println("开始打印orderWide----------")
+            for (orderWide <- orderWides){
+              println(JSON.toJSONString(orderWide,new SerializeConfig(true)))
+            }
+            println("结束打印orderWide----------")
           }
         )
       //提交offsets
