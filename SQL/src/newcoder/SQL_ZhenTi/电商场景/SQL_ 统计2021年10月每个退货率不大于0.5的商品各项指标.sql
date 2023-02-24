@@ -50,4 +50,4 @@ from tb_user_event t
 where date_format(t.event_time,'%Y-%m') = '2021-10'
 group by t.product_id
 having refund_rate <= 0.5
-order by product_id
+order by product_id;
