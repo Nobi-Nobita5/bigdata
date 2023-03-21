@@ -46,7 +46,13 @@ object MyKafkaUtils {
     */
   def getKafkaDStream(ssc : StreamingContext , topic: String  , groupId:String  ) ={
     consumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG , groupId)
-
+    /**
+     * LocationStrategies.PreferBrokers() 是当在你kafka集群和spark集群部署节点存在同一服务器上的时候，任务的 executor 会优先运行该节点上，节省了网络IO，缺点是容易造成资源热点问题，不推荐使用。
+     * LocationStrategies.PreferConsistent() 大多数情况下使用，不考虑kafka集群所在的影响，均匀的分配分区所有 executor 在spark集群上。
+     * 新的Kafka使用者API将预先获取消息到缓冲区。因此，出于性能原因，Spark集成将缓存的消费者保留在执行程序上（而不是为每个批处理重新创建它们），并且更喜欢在具有适当使用者的主机位置上安排分区，这一点很重要。
+     * 在大多数情况下，您应该使用LocationStrategies.PreferConsistent，如上所示。这将在可用执行程序之间均匀分配分区。
+     * 如果您的执行程序与Kafka代理在同一主机上，请使用PreferBrokers，它更愿意为该分区安排Kafka领导者的分区。
+     */
     val kafkaDStream: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream(ssc,
       LocationStrategies.PreferConsistent,
       ConsumerStrategies.Subscribe[String, String](Array(topic), consumerConfigs))
