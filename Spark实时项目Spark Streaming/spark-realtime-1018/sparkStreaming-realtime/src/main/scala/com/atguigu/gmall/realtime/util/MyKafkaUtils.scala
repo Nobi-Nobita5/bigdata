@@ -12,7 +12,7 @@ import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, Loca
 import scala.collection.mutable
 
 /**
-  * Kafka工具类， 用于生产数据和消费数据
+  * Kafka工具类， 用于从kafka生产数据和消费数据
   */
 object MyKafkaUtils {
 
