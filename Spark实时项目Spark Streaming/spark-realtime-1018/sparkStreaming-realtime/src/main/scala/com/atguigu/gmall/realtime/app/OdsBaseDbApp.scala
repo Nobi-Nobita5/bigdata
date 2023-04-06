@@ -83,10 +83,10 @@ object OdsBaseDbApp {
     //val dimTables : Array[String] = Array[String]("user_info", "base_province" /*缺啥补啥*/)
 
     //Redis连接写到哪里???
-    // foreachRDD外面:  driver  ，连接对象不能序列化，不能传输
-    // foreachRDD里面, foreachPartition外面 : driver  ，每批次获取一次连接，连接对象不能序列化，不能传输
-    // foreachPartition里面 , 循环外面：executor ， 每分区数据开启一个连接，用完关闭。选用此方案
-    // foreachPartition里面,循环里面:  executor ， 每条数据开启一个连接，用完关闭， 太频繁。
+    // foreachRDD外面:  driver ，程序启动获取一次连接，TODO Redis连接对象（如Jedis）通常无法被序列化，不能传输
+    // foreachRDD里面, foreachPartition外面 : driver ，每批次获取一次连接，连接对象不能序列化，不能传输
+    // foreachPartition里面, jsonObjIter迭代器循环外面：executor ， 每分区数据开启一个连接，用完关闭。选用此方案
+    // foreachPartition里面, jsonObjIter迭代器循环里面: executor ， 每条数据开启一个连接，用完关闭，太频繁。
     //
     jsonObjDStream.foreachRDD(
       rdd => {//操作每批次的每个RDD抽象，用foreachPartition每批次每分区执行一次

@@ -16,8 +16,9 @@ import scala.collection.mutable
   *   2.  手动控制偏移量提交 ->  SparkStreaming提供了手动提交方案，但对DStream的结构进行转换之后，就不能获取offset：
   *        （kafka 0.9版本以后consumer的偏移量是保存在kafka的_consumer_offsets主题中,
  *            可以使用xxDstream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)提交偏移量
- *            但有一个限制，即提交偏移量时，数据流也必须是 InputDStream[ConsumerRecord[String, String]]这种结构）。
- *            我们会将ConsumerRecord转换成JSONObject，所以实际生产中通常会利用 ZooKeeper,Redis,Mysql 等工具手动对偏移量进行保存
+ *            但有一个限制，即提交偏移量时，数据流也必须是 InputDStream[ConsumerRecord[String, String]]这种结构。
+ *            另外，_consumer_offsets 主题的数据格式是由 Kafka 自身维护的，理论上不应该在应用程序中直接操作该主题。）。
+ *            事实上，本项目中我们是会将ConsumerRecord转换成JSONObject，所以实际生产中通常会利用 ZooKeeper,Redis,Mysql 等工具手动对偏移量进行保存
   *   3.  手动的提取偏移量维护到redis中
  *          -> 从kafka中消费数据之前，先到redis中读取偏移量， 使用读取到的偏移量到kakfa中消费数据
   *         -> 从kafka中消费到数据,
@@ -46,6 +47,7 @@ object MyOffsetsUtils {
     */
   def saveOffset( topic : String , groupId : String , offsetRanges: Array[OffsetRange]  ): Unit ={
     if(offsetRanges != null && offsetRanges.length > 0){
+      //用HashMap存放redis中hash类型的value。
       val offsets: util.HashMap[String, String] = new util.HashMap[String,String]()
       for (offsetRange <- offsetRanges) {
         val partition: Int = offsetRange.partition

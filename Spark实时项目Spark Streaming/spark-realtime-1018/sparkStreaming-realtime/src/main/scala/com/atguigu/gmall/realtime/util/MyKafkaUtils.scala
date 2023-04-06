@@ -97,7 +97,7 @@ object MyKafkaUtils {
     //linger.ms   0
     //retries
     //幂等配置
-    /*"enable.idempotence"是Kafka生产者的一个配置参数，它控制生产者是否启用幂等性。
+    /*"enable.idempotence"是Kafka生产者的一个配置参数，它控制【生产者】是否启用幂等性。
 幂等性是指多次执行同一操作对系统状态的影响是一致的。在Kafka中，幂等性通常指生产者发送的消息只被接收一次，即使生产者在发送消息时出现故障。
 如果"enable.idempotence"参数设置为"true"，则Kafka生产者启用幂等性，并使用一些技术（例如发送消息的唯一标识符和重试策略）来确保消息不会重复发送。
 如果"enable.idempotence"参数设置为"false"，则Kafka生产者不启用幂等性，并且在出现故障时可能会重复发送消息。
@@ -110,6 +110,16 @@ object MyKafkaUtils {
     val producer: KafkaProducer[String, String] = new KafkaProducer[String,String](producerConfigs)
     producer
   }
+
+
+
+  /**
+   * 生产者发送数据到kafka后，Kafka 有默认的分区机制：
+   *
+   * 如果键值为 null， 则使用轮询 (Round Robin) 算法将消息均衡地分布到各个分区上；
+   * 如果键值不为 null，那么 Kafka 会使用内置的散列算法对键进行散列，然后分布到各个分区上。
+   * */
+
 
   /**
     * 生产（按照默认的黏性分区策略）

@@ -32,41 +32,58 @@ object OdsBaseLogApp {
     val sparkConf: SparkConf = new SparkConf().setAppName("ods_base_log_app").setMaster("local[4]")
     val ssc: StreamingContext = new StreamingContext(sparkConf , Seconds(5))
 
-    //2. 从kafka中消费数据
     val topicName : String = "ODS_BASE_LOG_1018"  //对应生成器配置中的主题名
     val groupId : String = "ODS_BASE_LOG_GROUP_1018"
 
+    //2. 从redis中读取偏移量
     //TODO  从Redis中读取offset， 指定offset进行消费
     val offsets: Map[TopicPartition, Long] = MyOffsetsUtils.readOffset(topicName, groupId)
 
+    //3. 从Kafka中消费数据
     var kafkaDStream: InputDStream[ConsumerRecord[String, String]] = null
     if(offsets != null && offsets.nonEmpty ){
       //指定offset进行消费
       kafkaDStream=
         MyKafkaUtils.getKafkaDStream(ssc, topicName , groupId , offsets)
-
     }else{
       //默认offset进行消费
       kafkaDStream=
         MyKafkaUtils.getKafkaDStream(ssc, topicName , groupId )
-
     }
-
-    // TODO 补充: 不对DStream流中的数据做任何处理，可以从当前消费到的数据中提取offsets
-    // TODO 在对当前流进行处理之前，拿到【本批次】的偏移量信息。在数据写出之后，将该偏移量信息提交（即写入Redis保存）
+    /**
+     * Driver 程序是用户提交的 Spark 应用程序的主程序
+     *
+     * 在编写 Spark 代码时，需要注意当前代码是在 Driver 程序还是 Executor 程序中执行，因为这会影响代码的运行方式和结果。
+     *
+     * 具体来说，Spark 中的算子可以分为两种类型：转换算子（Transformation）和动作算子（Action）。转换算子是用于对 RDD、DataFrame 或 Dataset 进行转换操作的算子，它们并不会触发任务的执行，而只是返回一个新的 RDD、DataFrame 或 Dataset 对象。而动作算子是用于触发任务执行的算子，它们会将数据从存储介质（如 HDFS、HBase、Kafka 等）读取到 Executor 中，进行计算并输出结果。
+     *
+     * 在编写 Spark 代码时，需要注意以下几点：
+     *
+     * 1. **对于转换算子，代码只会在 Driver 程序中执行**，因为转换算子只是返回一个新的 RDD、DataFrame 或 Dataset 对象，而不会触发任务的执行。
+     * 2. **对于动作算子，代码会在 Executor 程序中执行**，因为动作算子会触发任务的执行，并将数据从存储介质中读取到 Executor 中进行计算。此时，需要注意对数据的处理和存储，以免出现数据倾斜或存储过程中的性能瓶颈。
+     * 3. 在执行任务时，可以通过 Spark Web UI 来监控任务的执行情况，包括任务的调度、执行时间、内存使用情况等。
+     *
+     * 总之，在编写 Spark 代码时，需要根据具体的业务需求，选择合适的算子类型，并注意代码的执行环境，以保证代码的正确性和性能。
+     * */
+    //4. 提取偏移量结束点
+    // TODO 补充: 不对DStream流中的数据做任何处理。只是通过如下代码从当前消费到的数据流kafkaDStream中提取offsets
+    // TODO 本批次流数据offsetRangesDStream已获取完毕。在对当前流进行处理之前，拿到【本批次】的偏移量信息。在数据写出之后，将该偏移量信息提交（即写入Redis保存）
     var  offsetRanges: Array[OffsetRange] = null
     val offsetRangesDStream: DStream[ConsumerRecord[String, String]] = kafkaDStream.transform(
+      //具体是通过将kafkaDStream的rdd由ConsumerRecord[String, String]类型 转换为 HasOffsetRanges类型 的特征，因为HasOffsetRanges有获取偏移量的offsetRanges方法
       rdd => {
         //obj.asInstanceOf[C]类似java中类型转换(C)obj
-        offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges  // 在哪里执行? driver
+        //在哪里执行? transform 算子是在 Driver 端运行的，它的函数也是在 Driver 端定义的
+        //如果下方代码在executor端执行，那么给offsetRanges赋值会涉及网络传输等问题。
+        offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
         rdd//原样返回，不对DStream流中的数据做任何处理
       }
     )
 
     //kafkaDStream.print(100)，打印报错
     //此处的ConsumerRecord不支持Serializable接口，如果需要获取DStream数据打印并分流传递，则需要转换数据结构。
-    //3. 处理数据
-    //3.1 转换数据结构
+    //5. 处理数据
+    //5.1 转换数据结构
     val jsonObjDStream: DStream[JSONObject] = offsetRangesDStream.map(
       consumerRecord => {
         //获取ConsumerRecord中的value,value就是日志数据
@@ -79,7 +96,7 @@ object OdsBaseLogApp {
     )
     // jsonObjDStream.print(1000)//处理流数据打印出json数据
 
-    //3.2 分流
+    //5.2 分流
     // 日志数据：
     //   页面访问数据
     //      公共字段
@@ -106,7 +123,7 @@ object OdsBaseLogApp {
                               // 但是foreachRDD并不会触发立即处理，必须在碰到sparkcore的foreach或者foreachPartition算子后，才会触发action动作。
       rdd => {
 
-        rdd.foreachPartition(//foreachPartition是spark-core的算子，作用于每个分区
+        rdd.foreachPartition(//foreachPartition是spark-core的算子，作用于每个【rdd分区】
           jsonObjIter => {//jsonObjIter是包含分区中所有数据的一个迭代器
             for (jsonObj <- jsonObjIter) {//所有JSON数据对象
               //分流过程
@@ -172,7 +189,7 @@ object OdsBaseLogApp {
                       MyKafkaUtils.send(DWD_PAGE_DISPLAY_TOPIC , JSON.toJSONString(pageDisplayLog , new SerializeConfig(true)))
                     }
                   }
-                  //提取事件数据（课下完成）
+                  //提取事件数据
                   val actionJsonArr: JSONArray = jsonObj.getJSONArray("actions")
                   if(actionJsonArr != null && actionJsonArr.size() > 0 ){
                     for(i <- 0 until actionJsonArr.size()){
@@ -191,7 +208,7 @@ object OdsBaseLogApp {
                     }
                   }
                 }
-                // 启动数据（课下完成）
+                // 启动数据
                 val startJsonObj: JSONObject = jsonObj.getJSONObject("start")
                 if(startJsonObj != null ){
                   //提取字段
@@ -210,38 +227,52 @@ object OdsBaseLogApp {
                 }
               }
             }
-            // foreachPartition里面:  Executor段执行， 每批次每分区执行一次
-
-            /*
+            /**
+             * spark代码位置3,foreachPartition里面，每批次的一个分区执行一次（executor端）
+             * --------------------------------------------------------
             * KafkaProducer.flush()，强制将生产者缓存中的所有待发送记录立即发送到Kafka集群中
             * 当生产者发送消息时，它会缓存消息，并在后台定期发送批量数据。
             * 默认情况下，生产者在内部管理事务以确保发送数据的完整性。
-            * 如果您需要确保生产者在程序退出前立即发送所有缓存数据，可以使用flush()方法。*/
-
+            * 如果您需要确保生产者在程序退出前立即发送所有缓存数据，可以使用flush()方法。
+            *--------------------------------------------------------
+            * 另外，为什么flush操作要在rdd.foreachPartition里面执行？
+            * 因为如果flush操作在jsonObjDStream.foreachRDD里面，rdd.foreachPartition外面: 此时刷写Kafka缓冲区 的操作 是在 Driver端执行，即一批次执行一次（周期性）。
+            * 而分流操作是在executor端完成，发送分流数据的Kafka生产者对象也是在executor端创建并管理。所以是不能在driver端做刷写的，刷的不是同一个对象的缓冲区。
+            * */
             MyKafkaUtils.flush()
           }
         )
+        /**
+         * spark代码位置2,一批次执行一次（driver端）
+         * -------------------------------------------------------------
+         * //jsonObjDStream.foreachRDD里面，rdd.forech外面: 先让数据存盘(写出数据)，后提交offset到redis，避免数据丢失 -->  Driver段执行，一批次(包括该批次的所有分区)执行一次（周期性）
+         * //注：offsetRanges包含该批次的全部offset信息。我们在saveOffset方法中使用了redis的hash结构，可以存放下该批次的全部offset信息。
+         * */
+        MyOffsetsUtils.saveOffset(topicName,groupId,offsetRanges)
 
-        /*
+        /**
+        spark代码位置4,每条数据执行一次
         -------------------------------------------------------------
+        对于手动提交偏移量和生产者刷写缓冲区数据到磁盘，还有一种做法如下（使用rdd.foreach算子）：
         rdd.foreach(
           jsonObj => { //jsonObj是RDD中的每个对象
-            //foreach里面:  提交offset。-->  executor执行, 每条数据执行一次.操作每条数据一定是在executor端执行。
-            //foreach里面:  刷写kafka缓冲区。--> executor执行, 每条数据执行一次.  相当于是同步发送消息.
+            //foreach里面:  提交offset。-->  executor执行, 每条数据执行一次.操作每条数据一定是在executor端执行，。
+            //foreach里面:  刷写kafka缓冲区。--> executor执行, 每条数据执行一次.  相当于是同步发送消息。
+            //时间效率由高到低：仅启动程序时执行一次（driver端） > 一批次执行一次（driver端） > 每批次的一个分区执行一次（executor端） > 每条数据执行一次（executor端）。
+            //有时间效率更高的且可行的做法，所以不选用这种做法。
           }
         )
          */
-
-        //foreachRDD里面，forech外面: 后置提交offset到redis，避免数据丢失 -->  Driver段执行，一批次执行一次（周期性）
-        //offsetRanges包含该批次的全部offset信息
-        MyOffsetsUtils.saveOffset(topicName,groupId,offsetRanges)
-        //foreachRDD里面，forech外面: 刷写Kafka缓冲区。 --> Driver段执行，一批次执行一次（周期性） 分流是在executor端完成，不能在driver端做刷写，刷的不是同一个对象的缓冲区.
       }
     )
-    // foreachRDD外面:  提交offsets。 -->  Driver执行，每次启动程序执行一次.
-    // foreachRDD外面:  刷写kafka缓冲区。-->  Driver执行，每次启动程序执行一次.分流是在executor端完成，driver端做刷写，刷的不是同一个对象的缓冲区.
+    /**
+     * spark代码位置1,仅启动程序时执行一次（driver端）
+     * -------------------------------------------------------------------
+     * foreachRDD外面:  提交offsets。 -->  Driver执行，每次启动程序执行一次。不可行，无法通过不断手动提交偏移量解决kafka精确一次消费问题。
+     * foreachRDD外面:  刷写kafka缓冲区。-->  Driver执行，每次启动程序执行一次。不可行，分流是在executor端完成，不能在driver端做刷写，刷的不是同一个对象的缓冲区.
+     * */
     ssc.start()
-    /*等待终止*/
+    // 等待终止
     ssc.awaitTermination()
     // --------------------------------------------------------------------
   }
