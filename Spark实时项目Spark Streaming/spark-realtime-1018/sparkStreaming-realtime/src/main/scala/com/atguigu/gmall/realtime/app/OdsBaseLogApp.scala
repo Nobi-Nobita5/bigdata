@@ -73,8 +73,8 @@ object OdsBaseLogApp {
       //具体是通过将kafkaDStream的rdd由ConsumerRecord[String, String]类型 转换为 HasOffsetRanges类型 的特征，因为HasOffsetRanges有获取偏移量的offsetRanges方法
       rdd => {
         //obj.asInstanceOf[C]类似java中类型转换(C)obj
-        //在哪里执行? transform 算子是在 Driver 端运行的，它的函数也是在 Driver 端定义的
-        //如果下方代码在executor端执行，那么给offsetRanges赋值会涉及网络传输等问题。
+        //在哪里执行? TODO 下方代码是在 Driver 端运行的，因为 没有动作操作 触发spark任务的分配执行。rdd => {}里面的代码是对每个RDD进行操作，并没有具体到每个分区，所以不会在每个分区对应的节点上执行。
+        //如果下方代码在executor端执行，那么offsetRanges可能会被多个 executor 端的任务更新，这可能会导致不一致的结果。
         offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
         rdd//原样返回，不对DStream流中的数据做任何处理
       }
@@ -122,7 +122,7 @@ object OdsBaseLogApp {
                               // 最通用的输出方式，它将函数 func 应用于从流生成的每个 RDD。
                               // 但是foreachRDD并不会触发立即处理，必须在碰到sparkcore的foreach或者foreachPartition算子后，才会触发action动作。
       rdd => {
-
+        /*TODO 介于foreachRDD和foreachPartition之间的代码是在 Driver 端运行的，因为 这块代码是对每个RDD进行操作，并没有具体到每个分区，所以不会在每个分区对应的节点上执行。*/
         rdd.foreachPartition(//foreachPartition是spark-core的算子，作用于每个【rdd分区】
           jsonObjIter => {//jsonObjIter是包含分区中所有数据的一个迭代器
             for (jsonObj <- jsonObjIter) {//所有JSON数据对象
