@@ -178,8 +178,8 @@ object DwdOrderApp {
     // 从数据库层面： order_info 表中的数据 和 order_detail表中的数据一定能关联成功.
     // 从流处理层面:  order_info 和  order_detail是两个流， 流的join只能是同一个批次的数据才能进行join
     //               如果两个表的数据进入到不同批次中， 就会join不成功.
-    // 数据延迟导致的数据没有进入到同一个批次，在实时处理中是正常现象. 我们可以接收因为延迟导致最终的结果延迟.
-    // 我们不能接收因为延迟导致的数据丢失.
+    // 数据延迟导致的数据没有进入到同一个批次，在实时处理中是正常现象. 我们可以接受因为延迟导致最终的结果延迟.
+    // 我们不能接受因为延迟导致的数据丢失.
     val orderInfoKVDStream: DStream[(Long, OrderInfo)] =
         orderInfoDimDStream.map( orderInfo => (orderInfo.id , orderInfo))
 
@@ -204,10 +204,11 @@ object DwdOrderApp {
         val jedis: Jedis = MyRedisUtils.getJedisFromPool()
         val orderWides: ListBuffer[OrderWide] = ListBuffer[OrderWide]()
         for ((key, (orderInfoOp, orderDetailOp)) <- orderJoinIter) {
-          //orderInfo有， orderDetail有
+          //orderInfo有
           if (orderInfoOp.isDefined) {
             //取出orderInfo
             val orderInfo: OrderInfo = orderInfoOp.get
+            //orderInfo有,orderDetail有
             if (orderDetailOp.isDefined) {
               //取出orderDetail
               val orderDetail: OrderDetail = orderDetailOp.get
@@ -218,7 +219,7 @@ object DwdOrderApp {
             }
             //orderInfo有，orderDetail没有
             if (orderDetailOp.isEmpty) {
-              //orderInfo读缓存
+              //用orderInfo表的id 去读缓存
               val redisOrderDetailKey: String = s"ORDERJOIN:ORDER_DETAIL:${orderInfo.id}"
               val orderDetails: util.Set[String] = jedis.smembers(redisOrderDetailKey)
               if (orderDetails != null && orderDetails.size() > 0) {

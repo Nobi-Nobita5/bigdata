@@ -77,7 +77,7 @@ object DwdDauApp {
      * DStream可以理解为一系列连续的RDD，每个RDD都包含了一段时间内的数据。
      * 缓存处理Dstream流，方便打印操作后可以再次操作。因为行动操作触发后，该Dstream流就不存在了
      * 这里解释下：
-     *         DStream并非真正"消失"，而是原始数据被消费和处理后，产生了新的DStream。在整个处理过程中，DStream始终存在，只是其中的数据随着操作的执行而发生变化。
+     *         TODO DStream并非真正"消失"，而是原始数据被消费和处理后，产生了新的RDD,新的DStream。在整个处理过程中，DStream始终存在，只是其中的数据随着操作的执行而发生变化。
      *        相当于行动操作触发后，旧的pageLogDStream流在被处理后会被逐渐取代，产生的新的DStream并不叫pageLogDStream。
      * */
     pageLogDStream.cache()
@@ -110,7 +110,9 @@ object DwdDauApp {
 
     // 此处使用mapPartitions算子实现过滤功能，每批次每分区执行一次
     val redisFilterDStream: DStream[PageLog] = filterDStream.mapPartitions(//mapPartitions和foreachPartition的区别：
-                                                                           //前者是转换操作，可以获取返回值，而foreachPartition没有返回值并且是action操作
+                                                                           //前者是转换操作，可以返回新的RDD 或 DStream，
+                                                                            //而foreachPartition是action操作，所有不会返回新的 RDD 或 DStream。
+      //动作操作（action）通常会触发计算并将结果返回给驱动程序（driver）。与转换操作（transformation）不同，动作操作不会返回新的 RDD 或 DStream，而是返回一个值或者将数据写入到外部存储系统。
       pageLogIter => {
         val pageLogList: List[PageLog] = pageLogIter.toList
         //pageLogIter是个数据流的迭代器，下方代码调用size()，已经进行了一次迭代，该数据流就不存在了。

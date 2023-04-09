@@ -40,6 +40,7 @@ object OdsBaseLogApp {
     val offsets: Map[TopicPartition, Long] = MyOffsetsUtils.readOffset(topicName, groupId)
 
     //3. 从Kafka中消费数据
+    //TODO 在Spark Streaming中，DStream（Discretized Stream）是一种高级抽象，它表示一个连续的数据流。DStream可以理解为一系列连续的RDD（Resilient Distributed Dataset），每个RDD都包含了一段时间内的数据。
     var kafkaDStream: InputDStream[ConsumerRecord[String, String]] = null
     if(offsets != null && offsets.nonEmpty ){
       //指定offset进行消费
@@ -50,21 +51,6 @@ object OdsBaseLogApp {
       kafkaDStream=
         MyKafkaUtils.getKafkaDStream(ssc, topicName , groupId )
     }
-    /**
-     * Driver 程序是用户提交的 Spark 应用程序的主程序
-     *
-     * 在编写 Spark 代码时，需要注意当前代码是在 Driver 程序还是 Executor 程序中执行，因为这会影响代码的运行方式和结果。
-     *
-     * 具体来说，Spark 中的算子可以分为两种类型：转换算子（Transformation）和动作算子（Action）。转换算子是用于对 RDD、DataFrame 或 Dataset 进行转换操作的算子，它们并不会触发任务的执行，而只是返回一个新的 RDD、DataFrame 或 Dataset 对象。而动作算子是用于触发任务执行的算子，它们会将数据从存储介质（如 HDFS、HBase、Kafka 等）读取到 Executor 中，进行计算并输出结果。
-     *
-     * 在编写 Spark 代码时，需要注意以下几点：
-     *
-     * 1. **对于转换算子，代码只会在 Driver 程序中执行**，因为转换算子只是返回一个新的 RDD、DataFrame 或 Dataset 对象，而不会触发任务的执行。
-     * 2. **对于动作算子，代码会在 Executor 程序中执行**，因为动作算子会触发任务的执行，并将数据从存储介质中读取到 Executor 中进行计算。此时，需要注意对数据的处理和存储，以免出现数据倾斜或存储过程中的性能瓶颈。
-     * 3. 在执行任务时，可以通过 Spark Web UI 来监控任务的执行情况，包括任务的调度、执行时间、内存使用情况等。
-     *
-     * 总之，在编写 Spark 代码时，需要根据具体的业务需求，选择合适的算子类型，并注意代码的执行环境，以保证代码的正确性和性能。
-     * */
     //4. 提取偏移量结束点
     // TODO 补充: 不对DStream流中的数据做任何处理。只是通过如下代码从当前消费到的数据流kafkaDStream中提取offsets
     // TODO 本批次流数据offsetRangesDStream已获取完毕。在对当前流进行处理之前，拿到【本批次】的偏移量信息。在数据写出之后，将该偏移量信息提交（即写入Redis保存）
@@ -73,7 +59,8 @@ object OdsBaseLogApp {
       //具体是通过将kafkaDStream的rdd由ConsumerRecord[String, String]类型 转换为 HasOffsetRanges类型 的特征，因为HasOffsetRanges有获取偏移量的offsetRanges方法
       rdd => {
         //obj.asInstanceOf[C]类似java中类型转换(C)obj
-        //在哪里执行? TODO 下方代码是在 Driver 端运行的，因为 没有动作操作 触发spark任务的分配执行。rdd => {}里面的代码是对每个RDD进行操作，并没有具体到每个分区，所以不会在每个分区对应的节点上执行。
+        //TODO 针对每个 DStream，Spark 会根据其生成的 RDD 和分区来创建多个任务分配到各个节点上。
+        //TODO 如果这个Dstream流中只有一个转换操作，永远不会遇到动作操作（action），那么这个转换算子中的代码只会在driver端执行，而且针对RDD生成的执行计划，永远不会被执行。
         //如果下方代码在executor端执行，那么offsetRanges可能会被多个 executor 端的任务更新，这可能会导致不一致的结果。
         offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
         rdd//原样返回，不对DStream流中的数据做任何处理
