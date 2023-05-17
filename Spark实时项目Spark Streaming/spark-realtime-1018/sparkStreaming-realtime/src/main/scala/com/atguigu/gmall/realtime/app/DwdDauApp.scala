@@ -19,7 +19,7 @@ import redis.clients.jedis.{Jedis, Pipeline}
 import scala.collection.mutable.ListBuffer
 
 /**
-  * 日活宽表
+  * 用户日活宽表，分析日活数量
   *
   * 1. 准备实时环境
   * 2. 从Redis中读取偏移量

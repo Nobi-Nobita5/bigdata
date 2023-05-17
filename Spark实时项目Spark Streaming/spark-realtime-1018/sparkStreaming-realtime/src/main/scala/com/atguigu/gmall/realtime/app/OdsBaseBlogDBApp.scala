@@ -14,7 +14,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 import redis.clients.jedis.Jedis
 
 /**
-  * 业务数据消费分流
+  * 博客数据消费分流
   *
   * 1. 准备实时环境
   *
@@ -35,7 +35,7 @@ import redis.clients.jedis.Jedis
   *
   *
   */
-object OdsBaseDbApp {
+object OdsBaseBlogDBApp {
   def main(args: Array[String]): Unit = {
     //1. 准备实时环境
     val sparkConf: SparkConf = new SparkConf().setAppName("ods_base_db_app").setMaster("local[4]")

@@ -18,7 +18,7 @@ import redis.clients.jedis.Jedis
 import scala.collection.mutable.ListBuffer
 
 /**
-  * 订单宽表任务
+  * 用户历史信息数据流 和 博客信息数据流 宽表，实现实时推荐、分析用户年龄和博客类别的关系
   *
   * 1. 准备实时环境
   * 2. 从Redis中读取offset  * 2
@@ -31,7 +31,7 @@ import scala.collection.mutable.ListBuffer
   * 6. 写入ES
   * 7. 提交offset * 2
   */
-object DwdOrderApp {
+object Dwd_User_Blog_App {
 
   def main(args: Array[String]): Unit = {
     //1. 准备环境
