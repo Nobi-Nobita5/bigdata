@@ -35,7 +35,7 @@ import redis.clients.jedis.Jedis
   *
   *
   */
-object OdsBaseBlogDBApp {
+object Ods_博客事实数据采集_App {
   def main(args: Array[String]): Unit = {
     //1. 准备实时环境
     val sparkConf: SparkConf = new SparkConf().setAppName("ods_base_db_app").setMaster("local[4]")
@@ -77,9 +77,9 @@ object OdsBaseBlogDBApp {
     //5.2 分流
 
 
-    //事实表清单
+    //事实表清单，包括文章表、标签表、分类表等
     //val factTables : Array[String] = Array[String]( "order_info","order_detail" /*缺啥补啥*/)
-    //维度表清单
+    //维度表清单，用户信息表、地区表等
     //val dimTables : Array[String] = Array[String]("user_info", "base_province" /*缺啥补啥*/)
 
     //Redis连接写到哪里???

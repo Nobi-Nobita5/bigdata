@@ -18,8 +18,11 @@ import redis.clients.jedis.Jedis
 import scala.collection.mutable.ListBuffer
 
 /**
-  * 用户历史信息数据流 和 博客信息数据流 宽表，实现实时推荐、分析用户年龄和博客类别的关系
-  *
+  * 【日志页面访问事实数据流】 和 【博客信息事实数据流】关联的宽表，实现：
+  *  1.实时推荐
+  *  2.分析用户年龄、性别和博客类别的关系，得出结论：什么年龄喜欢什么类型的博客
+  *  3.实时热点分析：分析热点分类、热门标签等。
+  * ------------------
   * 1. 准备实时环境
   * 2. 从Redis中读取offset  * 2
   * 3. 从kakfa中消费数据 * 2
@@ -31,7 +34,7 @@ import scala.collection.mutable.ListBuffer
   * 6. 写入ES
   * 7. 提交offset * 2
   */
-object Dwd_User_Blog_App {
+object Dwd_日志事实和博客事实双流关联_App {
 
   def main(args: Array[String]): Unit = {
     //1. 准备环境

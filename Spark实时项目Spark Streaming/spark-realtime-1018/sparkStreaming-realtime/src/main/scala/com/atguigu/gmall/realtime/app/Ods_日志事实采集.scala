@@ -12,20 +12,22 @@ import org.apache.spark.streaming.kafka010.{HasOffsetRanges, OffsetRange}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
- * 日志数据的消费分流
+ * 注意区分kafka的分区和Spark的RDD分区、Spark的Driver、Executor的区别
+ * ------------------------------------
+ * 日志事实数据的消费分流
  * 1. 准备实时处理环境 StreamingContext
- *
- * 2. 从Kafka中消费数据
- *
- * 3. 处理数据
- *     3.1 转换数据结构
+ * 2. 从redis获取偏移量
+ * 3. 从Kafka中消费数据
+ * 4. 从kafkaDStream中提取偏移量结束点
+ * 5. 处理数据
+ *     5.1 转换数据结构
  *           专用结构  Bean
  *           通用结构  Map JsonObject
- *     3.2 分流
+ *     5.2 分流
  *
- * 4. 写出到DWD层
+ * 6. 写出到DWD层
  */
-object OdsBaseLogApp {
+object Ods_日志事实采集 {
   def main(args: Array[String]): Unit = {
     //1. 准备实时环境
     //TODO 注意并行度与Kafka中topic的分区个数的对应关系
@@ -85,14 +87,12 @@ object OdsBaseLogApp {
 
     //5.2 分流
     // 日志数据：
-    //   页面访问数据
     //      公共字段
+    //   页面访问数据
     //      页面数据
     //      曝光数据
     //      事件数据
-    //      错误数据
     //   启动数据
-    //      公共字段
     //      启动数据
     //      错误数据
     val DWD_PAGE_LOG_TOPIC : String = "DWD_PAGE_LOG_TOPIC_1018"  // 页面访问
@@ -232,7 +232,7 @@ object OdsBaseLogApp {
         /**
          * spark代码位置2,一批次执行一次（driver端）
          * -------------------------------------------------------------
-         * //jsonObjDStream.foreachRDD里面，rdd.forech外面: 先让数据存盘(写出数据)，后提交offset到redis，避免数据丢失 -->  Driver段执行，一批次(包括该批次的所有分区)执行一次（周期性）
+         * //jsonObjDStream.foreachRDD里面，rdd.forech或rdd.forechPartition算子外面: 先让数据存盘(写出数据)，后提交offset到redis，避免数据丢失 -->  Driver段执行，一批次(包括该批次的所有分区)执行一次（周期性）
          * //注：offsetRanges包含该批次的全部offset信息。我们在saveOffset方法中使用了redis的hash结构，可以存放下该批次的全部offset信息。
          * */
         MyOffsetsUtils.saveOffset(topicName,groupId,offsetRanges)

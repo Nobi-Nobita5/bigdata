@@ -18,21 +18,23 @@ import redis.clients.jedis.{Jedis, Pipeline}
 
 import scala.collection.mutable.ListBuffer
 
-/**
-  * 用户日活宽表，分析日活数量
-  *
+/** 【日志页面访问事实数据】关联【用户维度数据】
+  * 用户日活宽表，用于：
+  *  1.统计每日活跃用户
+  *  2.分析用户地域和网站访问量的关系，用户年龄和网站访问量的关系
+  * ------------------
   * 1. 准备实时环境
   * 2. 从Redis中读取偏移量
   * 3. 从kafka中消费数据
   * 4. 提取偏移量结束点
   * 5. 处理数据
   *     5.1 转换数据结构
-  *     5.2 去重
+  *     5.2 以上这几种分析用途都需要进行 去重
   *     5.3 维度关联
   * 6. 写入ES
   * 7. 提交offsets
   */
-object DwdDauApp {
+object Dwd_去重的日志事实和用户维度关联_App {
 
   def main(args: Array[String]): Unit = {
     //0.还原状态
