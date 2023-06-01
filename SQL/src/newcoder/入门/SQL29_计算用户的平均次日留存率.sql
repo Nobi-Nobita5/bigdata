@@ -63,13 +63,16 @@ commit;
 
 # 题目：现在运营想要查看用户在某天刷题后第二天还会再来刷题的平均概率。请你取出相应数据。
 
+# 题目明细
 select * from question_detail;
+# 设备刷题信息表
 select * from question_practice_detail;
+# 用户信息明细
 select * from user_profile;
 
 /*
  解法一：
-    question_practice_detail：用户刷题信息表，唯一主键：id
+    question_practice_detail：设备刷题信息表，唯一主键：id
     uniq_id_date：构建用户第二天来了的临时表，question_practice_detail去重device_id, date，主键：device_id, date
 
     select
@@ -79,7 +82,7 @@ select * from user_profile;
     on t1.device_id = t2.device_id and date_add(t1.date, interval 1 day) = t2.date
 
     用户第二天还来的概率：count(date2) / count(date1)
-                        计算第二天还来的概率，不需要同一天的多条数据，所以两个日期都做了去重处理
+                        计算第二天还来的概率，不需要同一天的多条数据，所以两个count中的日期都做了去重处理
  */
 select count(date2) / count(date1) as avg_ret
 from (
@@ -89,6 +92,7 @@ from (
                       uniq_id_date.date as date2
          from question_practice_detail as qpd
                   left join(
+                /*DISTINCT关键字用于去除查询结果中的重复行。当使用DISTINCT关键字时，它会应用于整个选择列表（即在SELECT关键字之后的所有列）*/
              select distinct device_id, date
              from question_practice_detail
          ) as uniq_id_date

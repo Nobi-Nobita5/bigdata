@@ -31,6 +31,10 @@ dt	        avg_viiew_len_sec
 11月2日有2个人浏览文章，总共时长为50+23=73秒，人均时长为36.5秒。
  */
 
+select * from tb_user_log;
+
+select timestamp(in_time) from tb_user_log where id = 1;
+
 select timestampdiff(second,in_time,out_time) from tb_user_log where id = 1;
 
 select date_format(t.in_time,'%Y-%m-%d') dt,round(sum(timestampdiff(second,in_time,out_time)) / count(distinct t.uid),1) avg_viiew_len_sec
