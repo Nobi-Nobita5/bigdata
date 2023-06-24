@@ -1,31 +1,22 @@
-select * from student;
-create table student2(id int, name string);
-insert overwrite table student2
-select * from student;
 show databases ;
 use behavior;
 use default;
-create function get_city_by_ip
-    as 'cn.wolfcode.udf.Ip2Loc' using jar 'hdfs://hadoop102:8020//spark-jars/hive_udf_custom-1.0.0.jar';
-select  get_city_by_ip("192.168.113.1");
 
-create function url_trans_udf
-    as 'cn.wolfcode.udf.UrlHandlerUdf' using jar 'hdfs://hadoop102:8020//spark-jars/hive_udf_custom-1.0.0.jar';
+select *  from ods_behavior_log;
 
-select url_trans_udf("http://www.baidu.com?name=kw");
+CREATE EXTERNAL TABLE dwd_behavior_log
+(
+    `client_ip`   STRING COMMENT '客户端IP',
+    `device_type` STRING COMMENT '设备类型',
+    `type`        STRING COMMENT '上网类型 4G 5G WiFi',
+    `device`      STRING COMMENT '设备ID',
+    `url`         STRING COMMENT '访问的资源路径',
+    `city`        STRING COMMENT '城市',
+    `ts`          bigint comment "时间戳"
+) COMMENT '页面启动日志表'
+    PARTITIONED BY (`dt` STRING)
+    STORED AS ORC
+    LOCATION '/behavior/dwd/dwd_behavior_log'
+    TBLPROPERTIES ("orc.compress" = "snappy");
 
-select * from ods_behavior_log;
-select * from dwd_behavior_log;
 
-insert overwrite table dwd_behavior_log partition (dt)
-select get_json_object(line, '$.client_ip'),
-       get_json_object(line, '$.device_type'),
-       get_json_object(line, '$.type'),
-       get_json_object(line, '$.device'),
-       url_trans_udf(get_json_object(line, '$.url')),
-       split(get_city_by_ip(get_json_object(line, '$.client_ip')),"_")[0],
-       get_json_object(line, '$.time'),
-       dt
-from ods_behavior_log;
-
-select * from dwd_behavior_log;
